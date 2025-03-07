@@ -1,2 +1,2 @@
-# adaline-from-scratch
+# Adaline from scratch
 Implementing Adaline from scratch.
