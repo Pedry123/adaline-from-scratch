@@ -121,6 +121,6 @@ if __name__ == "__main__":
     # Criar animação
     fig = plt.figure(figsize=(10, 6))
     ani = FuncAnimation(fig, animate, frames=range(0, len(adaline.weights_history), 10),
-                        fargs=(data, adaline.weights_history, 'ADALine'),
+                        fargs=(data, adaline.weights_history, 'ADALINE'),
                         interval=10, blit=False, repeat=False)
     ani.save('adaline.gif', writer='imagemagick', fps=1)
