@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation
 from sklearn.datasets import make_classification, make_blobs
 from sklearn.preprocessing import StandardScaler
 
-def plotline(data, weights, title):
+def plotline(data, weights, epoch, weights_history, title):
     plt.scatter(data[:, 0], data[:, 1], c=data[:, -1], edgecolors='k')  # Corrigido para usar a última coluna (saída)
 
     xmin, xmax = plt.gca().get_xlim()
@@ -12,7 +12,11 @@ def plotline(data, weights, title):
 
     x = np.linspace(-2, 2, 100)
     y = (-weights[1] * x - weights[0]) / weights[2]
-    plt.plot(x, y, label=title)
+    final_epoch = len(weights_history) - 1
+    if epoch == final_epoch:
+        plt.plot(x, y, label=title, color='red', linewidth=3)
+    else:
+        plt.plot(x, y, label=title, linewidth=3)
 
     plt.xlim(xmin, xmax)
     plt.ylim(ymin, ymax)
@@ -29,13 +33,13 @@ def animate(i, data, weights_history, title):
     current_weights = weights_history[i]
     
     if i == 0:
-        epoch_label = "- Época Inicial"
+        epoch_label = "- Início do Treino"
     elif i == len(weights_history) - 1:
-        epoch_label = f'- Época Final'
+        epoch_label = f'- Fim do Treino'
     else:
         epoch_label = f'- Em Treinamento'
     
-    plotline(data, current_weights, f'{title} {epoch_label}')
+    plotline(data, current_weights, i, weights_history, f'{title} {epoch_label}')
     #plotline(data, current_weights, f'{title}')
     return plt.gca().lines
 
@@ -128,5 +132,5 @@ if __name__ == "__main__":
     fig = plt.figure(figsize=(10, 6))
     ani = FuncAnimation(fig, animate, frames=range(0, len(perceptron.weights_history), 1),
                         fargs=(data, perceptron.weights_history, 'Perceptron'),
-                        interval=10000, blit=False, repeat=False)
+                        interval=10, blit=False, repeat=False)
     ani.save('perceptron.gif', writer='imagemagick', fps=1)
